@@ -71,8 +71,7 @@ export default function ArbolDatos(props){
     }
 
     const onChangeCheck = (id) => {
-        let campoSelect = document.getElementById(id)
-        console.log(campoSelect)
+        let campoSelect = document.getElementById(id)        
         if(campoSelect.checked){
             registroChecked.map((obj,idRow)=>{
                 registroChecked[idRow] = {...registroChecked[idRow], estado:false}
@@ -96,7 +95,7 @@ export default function ArbolDatos(props){
     useEffect(() => {
         let datosArbol = []
         let arbol = []
-        if(valorFiltro!==null||selectCombos.proyecto!=='Seleccionar'||selectCombos.especialidad!=='Seleccionar'){
+        if(valorFiltro!==null||selectCombos.proyecto!=='Seleccionar'||selectCombos.especialidad!=='Seleccionar' ||selectCombos.periodo!=='Seleccionar'){
             arbol = [...originalArbol]
             
             if(selectCombos.proyecto!=='Seleccionar')
@@ -104,7 +103,7 @@ export default function ArbolDatos(props){
                         let hijo = objArbol.hijo
                         let estado = false
                         for(let i=0;i < hijo.length;i++){
-                            if(hijo[i]!==undefined&&hijo[i].idProyecto === selectCombos.proyecto){
+                            if(hijo[i]!==undefined&&hijo[i].idProyecto === selectCombos.proyecto.toLowerCase()){
                                 estado = true
                             }
                         }
@@ -117,7 +116,7 @@ export default function ArbolDatos(props){
                         let hijo = objArbol.hijo
                         let estado = false
                         for(let i=0;i < hijo.length;i++){
-                            if(hijo[i]!==undefined&&hijo[i].idEspecialidad === selectCombos.especialidad){
+                            if(hijo[i]!==undefined&&hijo[i].idEspecialidad === selectCombos.especialidad.toLowerCase()){
                                 estado = true
                             }
                         }
@@ -130,7 +129,7 @@ export default function ArbolDatos(props){
                         let hijo = objArbol.hijo
                         let estado = false
                         for(let i=0;i < hijo.length;i++){
-                            if(hijo[i]!==undefined&&hijo[i].periodo === selectCombos.periodo){
+                            if(hijo[i]!==undefined&&hijo[i].rangoFecha === selectCombos.periodo){
                                 estado = true
                             }
                         }

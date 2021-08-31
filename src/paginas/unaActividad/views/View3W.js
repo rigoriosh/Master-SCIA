@@ -1,7 +1,8 @@
 import React,{useState, useEffect} from 'react'
 
 export const View3W = (props) => {
-    let comboUnidadMedida = [],comboActividad = []
+    let comboUnidadMedida = []
+    let comboActividad = []
     let lblLabelComboActividades = null, lblInicioPlaneado = null, lblCantidadProgramada = null
     let lblUnidadMedidad = null, lblInicioProgamado = null, lblFinProgramado = null
     let listadoObjetosEstado = null
@@ -12,7 +13,15 @@ export const View3W = (props) => {
     const [unidadMedida, setUnidadMedida] = useState(null)
     const [textArea, setTextArea] = useState(null)
     const [listActividad, setListActividad] = useState(null)
-    const [combo, setCombo] = useState({comboActividad:{visible:false, activo: false}})
+    const [combo, setCombo] = useState({comboactividad:{visible:false, activo: false},
+                                        descripcion:{visible:false, activo: false},
+                                        unidadMedida:{visible:false, activo: false},
+                                        Cantidad:{visible:false, activo: false},
+                                        fechainiprog:{visible:false, activo: false},
+                                        fechafinprog:{visible:false, activo: false},
+                                        cmdeliminar:{visible:false, activo: false},
+                                        cmdcerrar: null
+                                    })
 
     if(props.apiActividad!==null&&props.apiActividad!==false){
         comboUnidadMedida = props.apiActividad.comboUnidadMedida
@@ -36,8 +45,9 @@ export const View3W = (props) => {
             setUnidadMedida(props.apiActividad.idunidadmedida)
             setListActividad(props.apiActividad.idactividad)
             if(props.apiActividad.listadoObjetosEstado!==undefined) {
-                const losCombos = props.apiActividad.listadoObjetosEstado[3]
-                setCombo({...combo,comboActividad:{visible: losCombos.visible, activo: losCombos.activo}})
+                props.apiActividad.listadoObjetosEstado.map(dato=>{
+                    setCombo({...combo,[dato.id]:{visible: dato.visible, activo: dato.activo}})
+                })
             }
         }
     },[props.apiActividad])
@@ -51,19 +61,21 @@ export const View3W = (props) => {
 
     return (
         <div>
-            {combo.comboActividad.visible&&
+            {combo.comboactividad.visible&&
             <div className="input-group p-1">
                 <p style={{paddingRight:'20px' }}>{lblLabelComboActividades}</p>
-                <select value={listActividad} onChange={onListaActividad} id="nombreProyecto" className="form-select form-select-sm" disabled={!combo.comboActividad.activo}>
+                <select value={listActividad} onChange={onListaActividad} id="nombreProyecto" className="form-select form-select-sm" disabled={!combo.comboactividad.activo}>
                     {comboActividad.map((obj)=>{
                         return <option value={obj.id}>{obj.descripcion}</option>
                     })}
                 </select>
             </div>}
-
+            {combo.descripcion.visible&&
             <div className="input-group p-1">
-                <textarea value={textArea} onChange={onTextArea} id="idDescripcion" className="form-control" placeholder="Descripción de la actividad" style={{height: "100px"}}></textarea>
-            </div>
+                <textarea value={textArea} onChange={onTextArea} id="idDescripcion" 
+                          className="form-control" placeholder="Descripción de la actividad" 
+                          style={{height: "100px"}} disabled={!combo.descripcion.activo}></textarea>
+            </div>}
 
 
             <div style={{marginBottom:'15px', marginTop:'15px'}}>
@@ -79,21 +91,29 @@ export const View3W = (props) => {
                 </select>
             </div>
 
+            {combo.Cantidad.visible&&
             <div className="input-group p-1">
                 <p style={{paddingRight:'20px'}}>{lblCantidadProgramada}</p>
-                <input value={cantidadProgramada} onChange={onCantidadProgramada} id="idCantidad" type="number" className="form-control form-control-sm" placeholder="Ingresa una cantidad"/>
-            </div>
-            
+                <input value={cantidadProgramada} onChange={onCantidadProgramada} id="idCantidad" 
+                       type="number" className="form-control form-control-sm" 
+                       placeholder="Ingresa una cantidad" disabled={!combo.Cantidad.activo}/>
+            </div>}
+
+            {combo.fechainiprog.visible&&
             <div className="input-group p-1">
                 <p style={{paddingRight:'20px'}}>{lblInicioProgamado}</p>
-                <input value={inicioProgramado} onChange={onInicioProgramado} id="fechaInicio" type="datetime-local" className="form-control form-control-sm"/>
-                
-            </div>
+                <input value={inicioProgramado} onChange={onInicioProgramado} id="fechaInicio" 
+                       type="datetime-local" className="form-control form-control-sm"
+                       disabled={!combo.fechainiprog.activo}/>
+            </div>}
 
+            {combo.fechafinprog.visible&&
             <div className="input-group p-1">
                 <p style={{paddingRight:'20px'}}>{lblFinProgramado}</p>
-                <input value={finProgramado} onChange={onFinProgramado} id="fechaFin" step={1} type="datetime-local" data-date-inline-picker="true" className="form-control form-control-sm"/>
-            </div>
+                <input value={finProgramado} onChange={onFinProgramado} id="fechaFin" 
+                       step={1} type="datetime-local" data-date-inline-picker="true" 
+                       className="form-control form-control-sm" disabled={!combo.fechafinprog.activo}/>
+            </div>}
         </div>
     )
 }

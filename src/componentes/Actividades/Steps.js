@@ -70,11 +70,11 @@ export default function Steps({ updateStateActividades, stateActividades, cerrar
       const objtGuardar = {
         idactividad: idActividad,
         idnotificacion: notificacion,
-        descripcion: descripcion.value,
-        idunidadmedida: unidadMedida.value,
-        cantidad: Number(cantidad.value),
-        fechainiprog: fechaIniProg.value,
-        fechafinprog: fechaFinProg.value,
+        descripcion: descripcion!==null?descripcion.value:null,
+        idunidadmedida: unidadMedida!==null?unidadMedida.value:null,
+        cantidad: Number(cantidad!==null?cantidad.value:0),
+        fechainiprog: fechaIniProg!==null?fechaIniProg.value:null,
+        fechafinprog: fechaFinProg!==null?fechaFinProg.value:null,
       }
       
       if(objtGuardar.fechainiprog!=="" && objtGuardar.fechafinprog!=="" 
