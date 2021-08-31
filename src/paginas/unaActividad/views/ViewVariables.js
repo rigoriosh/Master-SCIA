@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export const ViewVariables = (props) => {
     const variables = props.apiActividadVariable
@@ -36,7 +37,7 @@ export const ViewVariables = (props) => {
         })
     },[props.apiActividadVariable])
 
-    const {titlePag, formulario} = stateVariablesCumplidas;
+    const {formulario} = stateVariablesCumplidas;
     const {personas, HSE, Documentos, Calidad, Area, Materiales, Herramientas, Equipos} = formulario;
     const updateChecksFormulario = (target) => {
         setStateVariablesCumplidas(
