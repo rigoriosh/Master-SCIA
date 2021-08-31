@@ -109,7 +109,7 @@ export default function Actividades3w(props){
                             onClick={()=>onCerrarActividades()}>Cerrar</button>
                 </div>
                 <div className="panel-body border">
-                    {(estadoBotones.CmdActividadCampo.visible && idAbrirActividad !== null) && 
+                    {(estadoBotones.CmdActividadCampo.visible) && 
                         <button className="btn btn-light botonesSuperior" 
                                 disabled={JSON.parse(window.localStorage.getItem('offline')).modeOffline||
                                             !estadoBotones.CmdActividadCampo.activo}  
@@ -136,19 +136,19 @@ export default function Actividades3w(props){
                                         <p className="tamanoLetraImg">Programar</p>
                                     </span>
                         </button>}
-                    {(estadoBotones.CmdEjecutar.visible && idAbrirActividad !== null) && 
+                    {estadoBotones.CmdEjecutar.visible && 
                         <button className="btn btn-light botonesSuperior" 
                                 disabled={JSON.parse(window.localStorage.getItem('offline')).modeOffline||
-                                            !estadoBotones.CmdEjecutar.activo} 
+                                            !estadoBotones.CmdEjecutar.activo || idAbrirActividad === null} 
                                 onClick={() => onAbrirEjecutar()}>
                                     <span><FaCamera className="tamanoImg" />
                                         <p className="tamanoLetraImg">Ejecutar</p>
                                     </span>
                         </button>}
-                    {(estadoBotones.CmdConfirmar.visible  && idAbrirActividad !== null) && 
+                    {estadoBotones.CmdConfirmar.visible && 
                         <button className="btn btn-light botonesSuperior" 
                                 disabled={JSON.parse(window.localStorage.getItem('offline')).modeOffline||
-                                            !estadoBotones.CmdConfirmar.activo} 
+                                            !estadoBotones.CmdConfirmar.activo  || idAbrirActividad === null} 
                                 onClick={() => onAbrirActividad()}>
                                     <span><FaThumbsUp className="tamanoImg" />
                                         <p className="tamanoLetraImg">Confirmar</p>
