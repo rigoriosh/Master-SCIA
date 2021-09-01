@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import React, { useState, useEffect } from 'react'
 
 export const ViewVariables = (props) => {
     const variables = props.apiActividadVariable
