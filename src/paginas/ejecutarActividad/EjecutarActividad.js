@@ -41,8 +41,9 @@ export const EjecutarActividad = (props) => {
 
     const cerrar = () => props.setShowEjecutar(false)
     const handleForm = (target) => {
+        const {name, value} = target;
         const {form} = stateEjecutarActividad;
-        setStateEjecutarActividad({...stateEjecutarActividad, form: {...form, [target.name]:{...form[target.name], value:target.value}}});
+        setStateEjecutarActividad({...stateEjecutarActividad, form: {...form, [name]:{...form[name], value:value}}});
     }
 
     const btnSelected = (btnSlected) => {
@@ -54,9 +55,14 @@ export const EjecutarActividad = (props) => {
     }
     // Relaliza la petición al back y pasa a renderizar labels y valores de la vista
     const consultaEjecucion = async(idtarea, idreporte) => {
-        const response = await GetEjecutarActividad(idtarea, idreporte);
+        try {
+            const response = await GetEjecutarActividad(idtarea, idreporte)
+            renderizarLabelsValores(response);
+        } catch (error) {
+            console.log(error)
+            props.setShowEjecutar(false);
+        }
         // setStateEjecutarActividad({...stateEjecutarActividad, respuestaGetEjecutarActividad: response});
-        renderizarLabelsValores(response);
     }
     useEffect(() => {
         if (props.showEjecutar) {
@@ -98,6 +104,7 @@ export const EjecutarActividad = (props) => {
     const renderizarLabelsValores = (response) => {
         // renderizar valores form
         const {listadoobjetosestado, datatable, etapatarea} = response;
+        console.log(5555);
         const data = datatable.filter(e => e.etapatarea === etapatarea)[0];
         const propForm = Object.keys(form);
         const valuesForm = {};
@@ -130,6 +137,18 @@ export const EjecutarActividad = (props) => {
             return true
         }
     }
+
+    const searchPhoto = (target) => {
+        let img = target.files[0];
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            // setImg(reader.result);
+            handleForm({name:'foto', value:reader.result})
+          };
+        reader.readAsDataURL(img);
+    }
+
     return (
         <SweetAlert
             show={props.showEjecutar}
@@ -234,12 +253,17 @@ export const EjecutarActividad = (props) => {
                                         ...estilos.estiloIcono,
                                         cursor: getVisibleActivoElement("CmdCapturar", "activo") ? 'pointer' :'default',
                                         display: getVisibleActivoElement("CmdCapturar", "visible") ? 'block' : 'none'}} />
-                                <FcSearch onClick={()=>{
-                                    if(getVisibleActivoElement("CmdBuscar", "activo")) btnSelected('search')}
-                                    } className="cursor" title='Buscar' style={{
-                                        ...estilos.estiloIcono,
-                                        cursor: getVisibleActivoElement("CmdBuscar", "activo") ? 'pointer' :'default',
-                                        display: getVisibleActivoElement("CmdBuscar", "visible") ? 'block' : 'none'}}/>
+                                    <input id="searhFoto" type="file" accept="image" capture="camera" style={{ display: "none" }}
+                                        onChange={({target})=>{searchPhoto(target)}}/>
+                                    <label htmlFor="searhFoto">
+                                            {/* <FcOldTimeCamera className="cursor" title='takePhoto' style={estilos.estiloIcono} /> */}
+                                            <FcSearch 
+                                                className="cursor" title='Buscar' style={{
+                                                    ...estilos.estiloIcono,
+                                                    cursor: getVisibleActivoElement("CmdBuscar", "activo") ? 'pointer' :'default',
+                                                    display: getVisibleActivoElement("CmdBuscar", "visible") ? 'block' : 'none'}}
+                                            />
+                                    </label>
                                 <FcFullTrash onClick={()=>{
                                     if(getVisibleActivoElement("CmdBorrar", "activo")) btnSelected('trash')
                                     }} className="cursor" title='Eliminar' style={{
@@ -248,7 +272,7 @@ export const EjecutarActividad = (props) => {
                                         display: getVisibleActivoElement("CmdBorrar", "visible") ? 'block' : 'none' }}/>
                             </div>
                         </IconContext.Provider>
-                        <img src={form.foto ? form.foto : noImg} alt="./assets/" style={{width:'280px', borderRadius:'20px'}}/>
+                        <img src={form.foto ? form.foto.value : noImg} alt="" style={{width:'280px', borderRadius:'20px'}}/>
                 </div>
                 <div id="btnsGroup1" style={{display:'flex', justifyContent:'space-around', marginBottom:'10px', textAlign:'center', width:'100%'}}>
                     <button onClick={()=>{

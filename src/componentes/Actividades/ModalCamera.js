@@ -16,7 +16,6 @@ export const ModalCamera = ({openModal, setOpenModal, btnSelected, handleForm}) 
 
     const handleTakePhoto = (target) => {
         let img = target.files[0];
-
         const reader = new FileReader();
         reader.onloadend = () => {
             setImg(reader.result);

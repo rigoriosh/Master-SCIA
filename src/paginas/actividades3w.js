@@ -86,6 +86,19 @@ export default function Actividades3w(props){
         obtieneDatos()
     },[])
 
+    useEffect(() => {
+        const tareaSeleccionada = arbol.filter(e => e.id === idAbrirActividad);
+        if (tareaSeleccionada.length > 0) {
+            const {idtarea, idreporte} = tareaSeleccionada[0];
+            if(!idtarea && !idreporte){
+                console.log({idtarea, idreporte})
+                alert(JSON.stringify({idtarea, idreporte}))
+                setIdAbrirActividad(null)
+            }
+        }
+        return () => {}
+    }, [idAbrirActividad])
+
     if(cargando)
         return <Cargando />
 
